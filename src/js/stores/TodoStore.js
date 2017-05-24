@@ -26,6 +26,7 @@ class TodoStore extends EventEmitter{
                 compeleted : false
             }
         ]
+        this.archivedTodos = [];
     }
 
     createTodo(text){
@@ -49,13 +50,21 @@ class TodoStore extends EventEmitter{
     }
 
     deleteTodo(id){
-        this.todos.splice(this.getIndex(id),1);
+        var item = this.todos.splice(this.getIndex(id),1);
+        this.archiveTodo(item);
         this.emit('change');
     }
 
     doneTodo(id){
         this.todos[this.getIndex(id)].compeleted = true;
-        this.emit('change');ß
+        this.emit('change');
+    }
+
+    archiveTodo(item){
+        this.archivedTodos.push(item);
+    }
+    getArchivedTodos(){
+        return this.archivedTodos;
     }
 
     getAll(){
